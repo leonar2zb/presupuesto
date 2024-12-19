@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { categories } from "../data/categories"
 import DatePicker from "react-date-picker"
 import 'react-date-picker/dist/DatePicker.css'
 import 'react-calendar/dist/Calendar.css'
 import { DraftExpense } from "../types"
+import { Value } from "react-calendar/src/shared/types.js"
 
 export default function ExpenseForm() {
 
@@ -13,6 +14,23 @@ export default function ExpenseForm() {
         category: '',
         date: new Date()
     })
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target
+        const isAmountField = ['amount'].includes(name)
+        setExpense({
+            ...expense,
+            [name]: isAmountField ? Number(value) : value
+        })
+    }
+
+    const handleChangeDate = (value: Value) => {
+        setExpense({
+            ...expense,
+            date: value
+        })
+    }
+
 
     return (
         <form className="space-y-5">
@@ -30,6 +48,7 @@ export default function ExpenseForm() {
                     className="bg-slate-100 p-2"
                     name="expenseName"
                     value={expense.expenseName}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -43,6 +62,7 @@ export default function ExpenseForm() {
                     className="bg-slate-100 p-2"
                     name="amount"
                     value={expense.amount}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -55,6 +75,7 @@ export default function ExpenseForm() {
                     className="bg-slate-100 p-2"
                     name="category"
                     value={expense.category}
+                    onChange={handleChange}
                 >
                     <option value="">-- Seleccione --</option>
                     {categories.map(category => (
@@ -74,6 +95,7 @@ export default function ExpenseForm() {
                 <DatePicker
                     className="bg-slate-100 p-2 border-0"
                     value={expense.date}
+                    onChange={handleChangeDate}
                 />
             </div>
 
