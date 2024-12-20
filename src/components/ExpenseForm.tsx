@@ -43,6 +43,12 @@ export default function ExpenseForm() {
         else {
             setError('')
             dispatch({ type: 'add-expense', payload: { expense } })
+            setExpense({
+                amount: 0,
+                expenseName: '',
+                category: '',
+                date: new Date()
+            })
         }
     }
 
