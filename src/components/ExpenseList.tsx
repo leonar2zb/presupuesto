@@ -10,7 +10,7 @@ export default function ExpenseList() {
             <>
                 <p className="text-gray-600 text-2xl font-bold my-5">Listado de gastos</p>
                 {state.expenses.map(expense => (
-                    <ExpenseDetails key={expense.id} />
+                    <ExpenseDetails key={expense.id} expense={expense} />
                 ))}
             </>
         )}
