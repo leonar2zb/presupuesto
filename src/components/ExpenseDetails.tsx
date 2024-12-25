@@ -5,6 +5,7 @@ import AmountDisplay from "./AmountDisplay"
 import { useMemo } from "react"
 import { categories } from "../data/categories"
 import "react-swipeable-list/dist/styles.css"
+import { useBudget } from '../hooks/useBudget'
 
 type ExpenseDetailsProp = {
     expense: Expense
@@ -12,6 +13,9 @@ type ExpenseDetailsProp = {
 
 export default function ExpenseDetails({ expense }: ExpenseDetailsProp) {
     const categoryInfo = useMemo(() => categories.filter(cat => cat.id === expense.category)[0], [expense])
+
+    const { dispatch } = useBudget()
+
     const leadingActions = () => (
         <LeadingActions>
             <SwipeAction onClick={() => { }}>
@@ -22,7 +26,7 @@ export default function ExpenseDetails({ expense }: ExpenseDetailsProp) {
 
     const trailingActions = () => (
         <TrailingActions>
-            <SwipeAction onClick={() => { }} destructive={true}                >
+            <SwipeAction onClick={() => dispatch({ type: 'remove-expense', payload: { id: expense.id } })} destructive={true}                >
                 Eliminar
             </SwipeAction>
         </TrailingActions>
@@ -31,7 +35,7 @@ export default function ExpenseDetails({ expense }: ExpenseDetailsProp) {
     return (
         <SwipeableList>
             <SwipeableListItem
-                maxSwipe={30}
+                maxSwipe={0.75}
                 leadingActions={leadingActions()}
                 trailingActions={trailingActions()}
             >
