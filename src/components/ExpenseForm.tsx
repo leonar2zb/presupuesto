@@ -48,8 +48,15 @@ export default function ExpenseForm() {
         if (Object.values(expense).includes(''))
             setError('Todos los campos son obligatorios')
         else {
-            setError('')
-            dispatch({ type: 'add-expense', payload: { expense } })
+            setError('') // limpiar los errores
+            //diferenciar casos para editar o agregar un nuevo expense
+            if (state.editingId) {
+                dispatch({ type: 'update-expense', payload: { expense: { id: state.editingId, ...expense } } })
+            }
+            else
+                dispatch({ type: 'add-expense', payload: { expense } })
+
+            // restablecer eñ formulario
             setExpense({
                 amount: 0,
                 expenseName: '',
